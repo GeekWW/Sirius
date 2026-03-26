@@ -6,9 +6,13 @@
 ## Agent状态
 
 ### ArchAgent (架构设计Agent)
-- **状态**: ✅ 已创建
+- **状态**: ✅ M1.1-M1.3完成，等待M1.4审核
 - **路径**: `agents/arch_agent/`
-- **下一步**: 启动Agent，开始M1.1 (ISA规范完整文档)
+- **已完成**:
+  - M1.1: `docs/architecture/isa_spec.md`
+  - M1.2: `docs/architecture/microarch.md`
+  - M1.3: `docs/architecture/module_interfaces.md`
+- **下一步**: M1.4 人工审核通过
 
 ### IsaToolAgent (ISA工具Agent)
 - **状态**: ⏳ 待创建
@@ -29,9 +33,9 @@
 ## Milestone进度
 
 ### ArchAgent
-- [ ] M1.1: ISA规范完整文档
-- [ ] M1.2: 微架构设计文档
-- [ ] M1.3: 模块接口定义
+- [x] M1.1: ISA规范完整文档
+- [x] M1.2: 微架构设计文档
+- [x] M1.3: 模块接口定义
 - [ ] M1.4: 人工审核通过
 
 ### IsaToolAgent
