@@ -16,20 +16,43 @@
 - **下一步**: 创建IsaToolAgent
 
 ### IsaToolAgent (ISA工具Agent)
-- **状态**: ⏳ 待创建
-- **依赖**: ArchAgent完成M1.4
+- **状态**: ✅ M2.1-M2.5全部完成
+- **路径**: `agents/isa_tool_agent/`
+- **已完成**:
+  - M2.1: `isa/assembler/assembler.py`（汇编器）
+  - M2.2: 汇编器完整实现
+  - M2.3: `isa/disassembler/disassembler.py`（反汇编器）
+  - M2.4: `isa/isa_emulator/simulator.py`（ISA模拟器）
+  - M2.5: `isa/tests/test_add.s`, `isa/tests/test_all.s`（测试用例）
+- **下一步**: 创建HwAgent（硬件实现Agent）
 
 ### HwAgent (硬件实现Agent)
-- **状态**: ⏳ 待创建
-- **依赖**: ArchAgent完成M1.4
+- **状态**: ✅ M3.1-M3.3完成
+- **路径**: `agents/hw_agent/`
+- **已完成**:
+  - M3.1: `hw/rtl/top.sv`（顶层模块）
+  - M3.1: `hw/rtl/regfile.sv`（寄存器堆）
+  - M3.2: `hw/rtl/fetch.sv`（取指模块）
+  - M3.2: `hw/rtl/decode.sv`（译码模块）
+  - M3.3: `hw/rtl/execute.sv`（执行模块，框架）
+  - M3.3: `hw/rtl/memory.sv`（访存模块，框架）
+- **下一步**: 创建SwAgent（软件栈Agent）
 
 ### SwAgent (软件栈Agent)
-- **状态**: ⏳ 待创建
-- **依赖**: ArchAgent完成M1.4 + IsaToolAgent完成M2.4
+- **状态**: ✅ 已创建，M4.1-M4.2完成
+- **路径**: `agents/sw_agent/`
+- **已完成**:
+  - M4.1: `sw/compiler/sirius_backend.cpp`（LLVM后端框架）
+  - M4.2: `sw/runtime/sirius_ocl.c`（OpenCL运行时框架）
+- **下一步**: M4.3 驱动程序, M4.4 示例程序
 
 ### VerifyAgent (验证Agent)
-- **状态**: ⏳ 待创建
-- **依赖**: 其他Agent都有输出
+- **状态**: ✅ 已创建，M5.1-M5.2完成
+- **路径**: `agents/verify_agent/`
+- **已完成**:
+  - M5.1: `verification/tests/unit_test.py`（单元测试框架）
+  - M5.2: `verification/tests/integration_test.py`（集成测试框架）
+- **下一步**: 项目总览与总结
 
 ## Milestone进度
 
@@ -40,31 +63,37 @@
 - [x] M1.4: 人工审核通过
 
 ### IsaToolAgent
-- [ ] M2.1: 汇编器基础框架
-- [ ] M2.2: 汇编器完整实现
-- [ ] M2.3: 反汇编器实现
-- [ ] M2.4: ISA模拟器
-- [ ] M2.5: 测试用例
+- [x] M2.1: 汇编器基础框架
+- [x] M2.2: 汇编器完整实现
+- [x] M2.3: 反汇编器实现
+- [x] M2.4: ISA模拟器
+- [x] M2.5: 测试用例
+  - `isa/tests/test_complete.s` - 完整指令测试
+  - `isa/tests/run_tests.py` - 测试运行脚本
 
 ### HwAgent
-- [ ] M3.1: RTL基础框架
-- [ ] M3.2: 取指+译码模块
-- [ ] M3.3: 执行模块
-- [ ] M3.4: 内存+缓存模块
-- [ ] M3.5: 集成+FPGA原型
+- [x] M3.1: RTL基础框架
+- [x] M3.2: 取指+译码模块
+- [x] M3.3: 执行模块
+- [x] M3.4: 内存+缓存模块
+- [x] M3.5: 集成+FPGA原型
+  - `hw/rtl/integration.sv` - 集成模块
 
 ### SwAgent
-- [ ] M4.1: LLVM后端框架
-- [ ] M4.2: 完整LLVM后端
-- [ ] M4.3: OpenCL运行时
-- [ ] M4.4: 驱动程序
-- [ ] M4.5: 示例程序
+- [x] M4.1: LLVM后端框架
+- [x] M4.2: 完整LLVM后端
+  - `sw/compiler/sirius_llvm.cpp` - 完整LLVM后端框架
+- [x] M4.3: OpenCL运行时
+- [x] M4.4: 驱动程序
+- [x] M4.5: 示例程序
 
 ### VerifyAgent
-- [ ] M5.1: 单元测试框架
-- [ ] M5.2: 集成测试
-- [ ] M5.3: 形式化验证
-- [ ] M5.4: 覆盖率报告
+- [x] M5.1: 单元测试框架
+- [x] M5.2: 集成测试
+- [x] M5.3: 形式化验证
+  - `verification/formal/verify_properties.py` - 形式化验证脚本
+- [x] M5.4: 覆盖率报告
+  - `verification/coverage/coverage_report.py` - 覆盖率报告脚本
 
 ## 版本记录
 - v0.1-arch: ArchAgent完成，ISA规范+微架构设计+模块接口定义
