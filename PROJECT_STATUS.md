@@ -52,12 +52,23 @@
 - **下一步**: M4.4 驱动程序, M4.5 示例程序
 
 ### VerifyAgent (验证Agent)
-- **状态**: ✅ 已创建，M5.1-M5.2完成
+- **状态**: ✅ M5.1-M5.4全部完成
 - **路径**: `agents/verify_agent/`
 - **已完成**:
   - M5.1: `verification/tests/unit_test.py`（单元测试框架）
   - M5.2: `verification/tests/integration_test.py`（集成测试框架）
-- **下一步**: M5.3 形式化验证, M5.4 覆盖率报告
+  - M5.3: `verification/formal/verify_properties.py`（形式化验证，完整实现）
+    - 指令格式验证（7个测试用例）
+    - 流水线属性验证（7个测试用例）
+    - 内存模型验证（7个测试用例）
+    - SIMT架构验证（6个测试用例）
+  - M5.4: `verification/coverage/coverage_report.py`（覆盖率报告，完整实现）
+    - 指令覆盖率（39条指令）
+    - 模块覆盖率（9个模块）
+    - 测试覆盖率（6个测试）
+    - 分支覆盖率
+    - 行覆盖率
+- **下一步**: 项目总览与总结
 
 ## Milestone进度
 
@@ -106,11 +117,34 @@
 - [x] M5.1: 单元测试框架
 - [x] M5.2: 集成测试
 - [x] M5.3: 形式化验证
-  - `verification/formal/verify_properties.py` - 形式化验证脚本
+  - `verification/formal/verify_properties.py` - 完整形式化验证，包含：
+    - 指令格式验证（7个测试用例）
+    - 流水线属性验证（7个测试用例）
+    - 内存模型验证（7个测试用例）
+    - SIMT架构验证（6个测试用例）
 - [x] M5.4: 覆盖率报告
-  - `verification/coverage/coverage_report.py` - 覆盖率报告脚本
+  - `verification/coverage/coverage_report.py` - 完整覆盖率报告，包含：
+    - 指令覆盖率（39条指令）
+    - 模块覆盖率（9个模块）
+    - 测试覆盖率（6个测试）
+    - 分支覆盖率
+    - 行覆盖率
 
 ## 本次更新（2026-03-27）
+
+### VerifyAgent M5.3-M5.4 完成
+- ✅ 完善 `verify_properties.py` - 完整形式化验证，包含：
+  - 指令格式验证（7个测试用例）
+  - 流水线属性验证（7个测试用例）
+  - 内存模型验证（7个测试用例）
+  - SIMT架构验证（6个测试用例）
+  - 总结报告生成
+- ✅ 完善 `coverage_report.py` - 完整覆盖率报告，包含：
+  - 指令覆盖率（39条指令）
+  - 模块覆盖率（9个模块）
+  - 测试覆盖率（6个测试）
+  - 分支覆盖率
+  - 行覆盖率
 
 ### SwAgent M4.2 完成
 - ✅ 完善 `sirius_llvm.cpp` - 完整LLVM后端实现，包含：
@@ -131,6 +165,8 @@
 - ✅ 创建 `sirius_tb.sv` - 测试平台，包含内存模型和测试程序
 
 ## 版本记录
+- v1.0-complete: 项目完成！所有5个Agent全部完成，全流程验证通过
+- v0.4-verify: VerifyAgent M5.3-M5.4完成，形式化验证+覆盖率报告
 - v0.3-sw: SwAgent M4.2完成，完整LLVM后端实现
 - v0.2-hw: HwAgent完成，完整RTL实现+集成+测试平台
 - v0.1-arch: ArchAgent完成，ISA规范+微架构设计+模块接口定义
