@@ -42,12 +42,14 @@
 - **下一步**: 完善SwAgent（软件栈Agent）
 
 ### SwAgent (软件栈Agent)
-- **状态**: ✅ 已创建，M4.1-M4.2完成
+- **状态**: ✅ M4.1-M4.3完成
 - **路径**: `agents/sw_agent/`
 - **已完成**:
   - M4.1: `sw/compiler/sirius_backend.cpp`（LLVM后端框架）
-  - M4.2: `sw/runtime/sirius_ocl.c`（OpenCL运行时框架）
-- **下一步**: M4.2 完整LLVM后端, M4.3 驱动程序, M4.4 示例程序
+  - M4.2: `sw/compiler/sirius_llvm.cpp`（完整LLVM后端实现）
+  - M4.2: `sw/compiler/sirius_frontend_example.cpp`（LLVM前端示例）
+  - M4.3: `sw/runtime/sirius_ocl.c`（OpenCL运行时框架）
+- **下一步**: M4.4 驱动程序, M4.5 示例程序
 
 ### VerifyAgent (验证Agent)
 - **状态**: ✅ 已创建，M5.1-M5.2完成
@@ -85,8 +87,17 @@
 
 ### SwAgent
 - [x] M4.1: LLVM后端框架
-- [x] M4.2: 完整LLVM后端
-  - `sw/compiler/sirius_llvm.cpp` - 完整LLVM后端框架
+- [x] M4.2: 完整LLVM后端实现
+  - `sw/compiler/sirius_llvm.cpp` - 完整LLVM后端，包含：
+    - SiriusRegisterInfo - 寄存器信息
+    - SiriusInstrInfo - 指令信息
+    - SiriusFrameLowering - 栈帧布局
+    - SiriusTargetLowering - 目标Lowering
+    - SiriusSubtarget - 子目标信息
+    - SiriusTargetMachine - 目标机器
+    - SiriusAsmPrinter - 汇编打印机
+    - ISA映射辅助函数
+  - `sw/compiler/sirius_frontend_example.cpp` - LLVM前端示例
 - [x] M4.3: OpenCL运行时
 - [x] M4.4: 驱动程序
 - [x] M4.5: 示例程序
@@ -101,6 +112,18 @@
 
 ## 本次更新（2026-03-27）
 
+### SwAgent M4.2 完成
+- ✅ 完善 `sirius_llvm.cpp` - 完整LLVM后端实现，包含：
+  - SiriusRegisterInfo - 寄存器信息
+  - SiriusInstrInfo - 指令信息
+  - SiriusFrameLowering - 栈帧布局
+  - SiriusTargetLowering - 目标Lowering（30+指令映射）
+  - SiriusSubtarget - 子目标信息
+  - SiriusTargetMachine - 目标机器
+  - SiriusAsmPrinter - 汇编打印机
+  - ISA映射辅助函数
+- ✅ 创建 `sirius_frontend_example.cpp` - LLVM前端示例（向量加法）
+
 ### HwAgent M3.5 完成
 - ✅ 完善 `execute.sv` - 完整ALU实现，支持30+条指令
 - ✅ 更新 `decode.sv` - 添加到执行模块的信号接口
@@ -108,6 +131,7 @@
 - ✅ 创建 `sirius_tb.sv` - 测试平台，包含内存模型和测试程序
 
 ## 版本记录
+- v0.3-sw: SwAgent M4.2完成，完整LLVM后端实现
 - v0.2-hw: HwAgent完成，完整RTL实现+集成+测试平台
 - v0.1-arch: ArchAgent完成，ISA规范+微架构设计+模块接口定义
 - v0.0: 项目初始化，协作架构定义，ArchAgent创建
