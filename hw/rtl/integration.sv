@@ -40,6 +40,11 @@ module sirius_integration (
     wire [31:0] rf_wdata;
     wire        rf_we;
     
+    wire [31:0] dec_inst;
+    wire        dec_inst_valid;
+    wire [31:0] dec_rf_rdata1;
+    wire [31:0] dec_rf_rdata2;
+    
     wire [31:0] alu_result;
     wire [4:0]  alu_rd;
     wire        alu_rd_valid;
@@ -81,6 +86,10 @@ module sirius_integration (
         .rf_raddr2(rf_raddr2),
         .rf_rdata1(rf_rdata1),
         .rf_rdata2(rf_rdata2),
+        .dec_inst(dec_inst),
+        .dec_inst_valid(dec_inst_valid),
+        .dec_rf_rdata1(dec_rf_rdata1),
+        .dec_rf_rdata2(dec_rf_rdata2),
         .alu_result(alu_result),
         .alu_rd(alu_rd),
         .alu_rd_valid(alu_rd_valid),
@@ -96,6 +105,10 @@ module sirius_integration (
     execute u_execute (
         .clk(clk),
         .rst_n(rst_n),
+        .inst(dec_inst),
+        .inst_valid(dec_inst_valid),
+        .rf_rdata1(dec_rf_rdata1),
+        .rf_rdata2(dec_rf_rdata2),
         .alu_result(alu_result),
         .alu_rd(alu_rd),
         .alu_rd_valid(alu_rd_valid)

@@ -18,6 +18,12 @@ module decode (
     input  wire [31:0] rf_rdata1,
     input  wire [31:0] rf_rdata2,
     
+    // 输出到执行模块
+    output reg  [31:0] dec_inst,
+    output reg         dec_inst_valid,
+    output reg  [31:0] dec_rf_rdata1,
+    output reg  [31:0] dec_rf_rdata2,
+    
     // 写回接口
     input  wire [31:0] alu_result,
     input  wire [4:0]  alu_rd,
@@ -26,7 +32,7 @@ module decode (
     input  wire [4:0]  lsu_rd,
     input  wire        lsu_rd_valid,
     
-    // 输出到执行
+    // 输出到寄存器堆写回
     output reg  [31:0] rf_wdata,
     output reg  [4:0]  rf_waddr,
     output reg         rf_we
@@ -38,11 +44,12 @@ module decode (
     reg [3:0] func;
     reg [7:0] offset;
     
-    reg [1:0] state;
+    reg [2:0] state;
     
-    localparam IDLE = 2'd0;
-    localparam DEC  = 2'd1;
-    localparam WB   = 2'd2;
+    localparam IDLE = 3'd0;
+    localparam DEC  = 3'd1;
+    localparam ISSUE = 3'd2;
+    localparam WB   = 3'd3;
     
     // 译码逻辑
     always @(*) begin
@@ -62,6 +69,10 @@ module decode (
             inst_ready <= 1'b0;
             rf_raddr1 <= 5'd0;
             rf_raddr2 <= 5'd0;
+            dec_inst <= 32'd0;
+            dec_inst_valid <= 1'b0;
+            dec_rf_rdata1 <= 32'd0;
+            dec_rf_rdata2 <= 32'd0;
             rf_wdata <= 32'd0;
             rf_waddr <= 5'd0;
             rf_we <= 1'b0;
@@ -69,6 +80,7 @@ module decode (
             case (state)
                 IDLE: begin
                     rf_we <= 1'b0;
+                    dec_inst_valid <= 1'b0;
                     if (inst_valid) begin
                         rf_raddr1 <= rs1;
                         rf_raddr2 <= rs2;
@@ -79,11 +91,21 @@ module decode (
                 
                 DEC: begin
                     inst_ready <= 1'b0;
-                    // 简化：直接传递，实际需要发射队列
+                    state <= ISSUE;
+                end
+                
+                ISSUE: begin
+                    // 发射到执行模块
+                    dec_inst <= inst;
+                    dec_inst_valid <= 1'b1;
+                    dec_rf_rdata1 <= rf_rdata1;
+                    dec_rf_rdata2 <= rf_rdata2;
                     state <= WB;
                 end
                 
                 WB: begin
+                    dec_inst_valid <= 1'b0;
+                    
                     // ALU写回
                     if (alu_rd_valid) begin
                         rf_waddr <= alu_rd;
@@ -100,14 +122,7 @@ module decode (
                         rf_we <= 1'b0;
                     end
                     
-                    if (inst_valid) begin
-                        rf_raddr1 <= rs1;
-                        rf_raddr2 <= rs2;
-                        inst_ready <= 1'b1;
-                        state <= DEC;
-                    end else begin
-                        state <= IDLE;
-                    end
+                    state <= IDLE;
                 end
                 
                 default: state <= IDLE;

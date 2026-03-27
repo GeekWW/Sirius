@@ -5,6 +5,27 @@
 
 ---
 
+## 2026-03-27 关键记录
+
+### 已完成
+- ✅ **HwAgent M3.5 完成** - 硬件集成+FPGA原型
+  - 完善 `execute.sv` - 完整ALU实现，支持30+条指令
+  - 更新 `decode.sv` - 添加到执行模块的信号接口
+  - 完善 `integration.sv` - 连接所有模块信号
+  - 创建 `sirius_tb.sv` - 测试平台，包含内存模型和测试程序
+- ✅ 更新 `PROJECT_STATUS.md` - 记录HwAgent完成状态
+
+### 当前状态
+- ✅ **HwAgent 100% 完成**！M3.1-M3.5 全部完成
+- ArchAgent (100%)、IsaToolAgent (100%)、HwAgent (100%) 已完成
+- 下一步：完善 SwAgent M4.2（完整LLVM后端）
+
+### 关键决策
+- 优先完成 HwAgent M3.5，再推进 SwAgent
+- 硬件测试平台使用简单的内存模型和状态机测试
+
+---
+
 ## 2026-03-26 关键记录
 
 ### 已完成

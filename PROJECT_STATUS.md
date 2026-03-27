@@ -1,7 +1,7 @@
 # Sirius GPGPU 项目状态
 
 ## 当前阶段
-**阶段1：架构设计** - 进行中
+**阶段3：硬件实现** - 进行中
 
 ## Agent状态
 
@@ -27,16 +27,19 @@
 - **下一步**: 创建HwAgent（硬件实现Agent）
 
 ### HwAgent (硬件实现Agent)
-- **状态**: ✅ M3.1-M3.3完成
+- **状态**: ✅ M3.1-M3.5全部完成
 - **路径**: `agents/hw_agent/`
 - **已完成**:
   - M3.1: `hw/rtl/top.sv`（顶层模块）
   - M3.1: `hw/rtl/regfile.sv`（寄存器堆）
   - M3.2: `hw/rtl/fetch.sv`（取指模块）
-  - M3.2: `hw/rtl/decode.sv`（译码模块）
-  - M3.3: `hw/rtl/execute.sv`（执行模块，框架）
-  - M3.3: `hw/rtl/memory.sv`（访存模块，框架）
-- **下一步**: 创建SwAgent（软件栈Agent）
+  - M3.2: `hw/rtl/decode.sv`（译码模块，已更新）
+  - M3.3: `hw/rtl/execute.sv`（执行模块，完整ALU实现）
+  - M3.3: `hw/rtl/memory.sv`（访存模块）
+  - M3.4: `hw/rtl/cache.sv`（缓存模块）
+  - M3.5: `hw/rtl/integration.sv`（集成模块，已完善）
+  - M3.5: `hw/rtl/sirius_tb.sv`（测试平台）
+- **下一步**: 完善SwAgent（软件栈Agent）
 
 ### SwAgent (软件栈Agent)
 - **状态**: ✅ 已创建，M4.1-M4.2完成
@@ -44,7 +47,7 @@
 - **已完成**:
   - M4.1: `sw/compiler/sirius_backend.cpp`（LLVM后端框架）
   - M4.2: `sw/runtime/sirius_ocl.c`（OpenCL运行时框架）
-- **下一步**: M4.3 驱动程序, M4.4 示例程序
+- **下一步**: M4.2 完整LLVM后端, M4.3 驱动程序, M4.4 示例程序
 
 ### VerifyAgent (验证Agent)
 - **状态**: ✅ 已创建，M5.1-M5.2完成
@@ -52,7 +55,7 @@
 - **已完成**:
   - M5.1: `verification/tests/unit_test.py`（单元测试框架）
   - M5.2: `verification/tests/integration_test.py`（集成测试框架）
-- **下一步**: 项目总览与总结
+- **下一步**: M5.3 形式化验证, M5.4 覆盖率报告
 
 ## Milestone进度
 
@@ -74,10 +77,11 @@
 ### HwAgent
 - [x] M3.1: RTL基础框架
 - [x] M3.2: 取指+译码模块
-- [x] M3.3: 执行模块
+- [x] M3.3: 执行模块（完整ALU）
 - [x] M3.4: 内存+缓存模块
-- [x] M3.5: 集成+FPGA原型
-  - `hw/rtl/integration.sv` - 集成模块
+- [x] M3.5: 集成+FPGA原型 + 测试平台
+  - `hw/rtl/integration.sv` - 集成模块（已完善）
+  - `hw/rtl/sirius_tb.sv` - 测试平台
 
 ### SwAgent
 - [x] M4.1: LLVM后端框架
@@ -95,7 +99,16 @@
 - [x] M5.4: 覆盖率报告
   - `verification/coverage/coverage_report.py` - 覆盖率报告脚本
 
+## 本次更新（2026-03-27）
+
+### HwAgent M3.5 完成
+- ✅ 完善 `execute.sv` - 完整ALU实现，支持30+条指令
+- ✅ 更新 `decode.sv` - 添加到执行模块的信号接口
+- ✅ 完善 `integration.sv` - 连接所有模块信号
+- ✅ 创建 `sirius_tb.sv` - 测试平台，包含内存模型和测试程序
+
 ## 版本记录
+- v0.2-hw: HwAgent完成，完整RTL实现+集成+测试平台
 - v0.1-arch: ArchAgent完成，ISA规范+微架构设计+模块接口定义
 - v0.0: 项目初始化，协作架构定义，ArchAgent创建
 
