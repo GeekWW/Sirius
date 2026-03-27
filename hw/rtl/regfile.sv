@@ -24,19 +24,11 @@ module regfile (
     reg [31:0] regs [0:31];
     integer i;
     
-    // R0 硬连线为0
+    // 读操作
     always @(*) begin
-        if (raddr1 == 5'd0) begin
-            rdata1 = 32'd0;
-        end else begin
-            rdata1 = regs[raddr1];
-        end
-        
-        if (raddr2 == 5'd0) begin
-            rdata2 = 32'd0;
-        end else begin
-            rdata2 = regs[raddr2];
-        end
+        // R0 硬连线为0
+        rdata1 = (raddr1 == 5'd0) ? 32'd0 : regs[raddr1];
+        rdata2 = (raddr2 == 5'd0) ? 32'd0 : regs[raddr2];
     end
     
     // 写操作

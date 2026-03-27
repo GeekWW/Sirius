@@ -49,6 +49,14 @@ module sirius_integration (
     wire [4:0]  alu_rd;
     wire        alu_rd_valid;
     
+    // LSU 信号
+    wire [31:0] lsu_mem_addr;
+    wire [31:0] lsu_mem_wdata;
+    wire [3:0]  lsu_mem_wstrb;
+    wire        lsu_mem_we;
+    wire [31:0] lsu_mem_rdata;
+    wire        lsu_mem_req;
+    wire        lsu_mem_ack;
     wire [31:0] lsu_result;
     wire [4:0]  lsu_rd;
     wire        lsu_rd_valid;
@@ -118,6 +126,17 @@ module sirius_integration (
     memory u_memory (
         .clk(clk),
         .rst_n(rst_n),
+        .inst(dec_inst),
+        .inst_valid(dec_inst_valid),
+        .rf_rdata1(dec_rf_rdata1),
+        .rf_rdata2(dec_rf_rdata2),
+        .mem_addr(lsu_mem_addr),
+        .mem_wdata(lsu_mem_wdata),
+        .mem_wstrb(lsu_mem_wstrb),
+        .mem_we(lsu_mem_we),
+        .mem_rdata(lsu_mem_rdata),
+        .mem_req(lsu_mem_req),
+        .mem_ack(lsu_mem_ack),
         .lsu_result(lsu_result),
         .lsu_rd(lsu_rd),
         .lsu_rd_valid(lsu_rd_valid)
@@ -136,14 +155,20 @@ module sirius_integration (
         .we(rf_we)
     );
     
-    // 内存仲裁（简化：优先取指）
-    assign mem_addr = fetch_mem_req ? fetch_mem_addr : 32'd0;
-    assign mem_wdata = 32'd0;
-    assign mem_wstrb = 4'h0;
-    assign mem_we = 1'b0;
-    assign fetch_mem_rdata = mem_rdata;
-    assign mem_req = fetch_mem_req;
-    assign fetch_mem_ack = mem_ack;
+    // 内存仲裁（优先 fetch，然后 lsu）
+    // 使用 assign 而不是 always
+    assign mem_addr = fetch_mem_req ? fetch_mem_addr : 
+                      lsu_mem_req   ? lsu_mem_addr   : 32'd0;
+    assign mem_wdata = lsu_mem_req ? lsu_mem_wdata : 32'd0;
+    assign mem_wstrb = lsu_mem_req ? lsu_mem_wstrb : 4'h0;
+    assign mem_we = lsu_mem_req ? lsu_mem_we : 1'b0;
+    assign mem_req = fetch_mem_req | lsu_mem_req;
+    
+    assign fetch_mem_rdata = fetch_mem_req ? mem_rdata : 32'd0;
+    assign fetch_mem_ack = fetch_mem_req ? mem_ack : 1'b0;
+    
+    assign lsu_mem_rdata = lsu_mem_req ? mem_rdata : 32'd0;
+    assign lsu_mem_ack = lsu_mem_req ? mem_ack : 1'b0;
     
     // 状态机
     always @(posedge clk or negedge rst_n) begin
